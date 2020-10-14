@@ -3,7 +3,6 @@ import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import axios from "axios";
 import color from "./app/config/color";
 import Review from "./app/components/Review";
-import { render } from "react-dom";
 
 export default App = () => {
   const [reviews, setReviews] = useState([]);
@@ -25,14 +24,14 @@ export default App = () => {
     <SafeAreaView style={styles.container}>
       <FlatList
         data={reviews}
-        renderItem={({ review }) => (
+        renderItem={({ item }) => (
           <Review
-            date={review.created_at}
-            message={review.message}
-            rating={review.rating}
+            date={item.created_at}
+            message={item.message}
+            rating={item.rating}
           />
         )}
-        keyExtractor={(review) => review.id.toString()}
+        keyExtractor={(item) => item.id.toString()}
       />
     </SafeAreaView>
   );
@@ -41,7 +40,7 @@ export default App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: color.white,
+    backgroundColor: color.secondary,
     alignItems: "center",
     justifyContent: "center",
   },
