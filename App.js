@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import axios from "axios";
 import color from "./app/config/color";
+import Review from "./app/components/Review";
+import { render } from "react-dom";
 
 export default App = () => {
   const [reviews, setReviews] = useState([]);
-  const getReviews = () => {
+
+  useEffect(() => {
     axios
       .get(
         "https://my-json-server.typicode.com/bytelion/expo_test_mock_api/reviews"
@@ -16,20 +19,21 @@ export default App = () => {
       .catch((err) => {
         console.log(err);
       });
-  };
-  useEffect(() => {
-    getReviews();
   }, []);
 
   return (
     <SafeAreaView style={styles.container}>
-      {reviews.map((review, i) => (
-        <View key={i}>
-          <Text>{review.created_at}</Text>
-          <Text>{review.rating}</Text>
-          <Text>{review.message}</Text>
-        </View>
-      ))}
+      <FlatList
+        data={reviews}
+        renderItem={({ review }) => (
+          <Review
+            date={review.created_at}
+            message={review.message}
+            rating={review.rating}
+          />
+        )}
+        keyExtractor={(review) => review.id.toString()}
+      />
     </SafeAreaView>
   );
 };
