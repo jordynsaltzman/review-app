@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import axios from "axios";
+import color from "./app/config/color";
 
 export default App = () => {
   const [reviews, setReviews] = useState([]);
@@ -21,7 +22,7 @@ export default App = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {reviews.map((review, i) => (
         <View key={i}>
           <Text>{review.created_at}</Text>
@@ -29,14 +30,14 @@ export default App = () => {
           <Text>{review.message}</Text>
         </View>
       ))}
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: color.white,
     alignItems: "center",
     justifyContent: "center",
   },
