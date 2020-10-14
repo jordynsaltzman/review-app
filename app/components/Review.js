@@ -1,12 +1,22 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, Button } from "react-native";
 import color from "../config/color";
 
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
-const Review = ({ date, rating, message }) => {
+const Review = ({ date, rating, message, id }) => {
+  const [vote, setVote] = useState();
+
   let wholeStars = Math.floor(rating);
   let halfStar = wholeStars < rating;
+
+  const handleVote = (value) => {
+    if (value === vote) {
+      setVote("");
+    } else {
+      setVote(value);
+    }
+  };
 
   return (
     <View style={styles.review}>
@@ -29,6 +39,23 @@ const Review = ({ date, rating, message }) => {
         <Text>{date.replace(/T.*/, "").split("-").reverse().join("/")}</Text>
       </View>
       <Text style={styles.message}>{message}</Text>
+      <View style={styles.cardBottom}>
+        <Button title="Reply" />
+        <View style={styles.thumbRow}>
+          <FontAwesome5
+            name={"thumbs-up"}
+            onPress={() => handleVote("up")}
+            style={styles.thumb}
+            solid={vote === "up"}
+          />
+          <FontAwesome5
+            name={"thumbs-down"}
+            style={styles.thumb}
+            onPress={() => handleVote("down")}
+            solid={vote === "down"}
+          />
+        </View>
+      </View>
     </View>
   );
 };
@@ -43,7 +70,7 @@ const styles = StyleSheet.create({
     shadowColor: color.black,
     marginVertical: 8,
     marginHorizontal: 20,
-    borderRadius: 10,
+    borderRadius: 6,
     padding: 8,
   },
   rating: {
@@ -56,6 +83,20 @@ const styles = StyleSheet.create({
   },
   star: {
     color: color.yellow,
+    fontSize: 18,
+  },
+  cardBottom: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 15,
+    backgroundColor: "lightgrey",
+  },
+  thumbRow: {
+    flexDirection: "row",
+  },
+  thumb: {
+    fontSize: 25,
+    padding: 5,
   },
   message: {
     fontSize: 16,
