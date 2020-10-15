@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+import Button from "../components/Button";
 import color from "../config/color";
+import Icon from "react-native-vector-icons/FontAwesome";
 
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-
-const Review = ({ date, rating, message, id }) => {
+const Review = ({ date, rating, message, onPress }) => {
   const [vote, setVote] = useState();
 
   let wholeStars = Math.floor(rating);
@@ -19,40 +19,39 @@ const Review = ({ date, rating, message, id }) => {
   };
 
   return (
-    <View style={styles.review}>
-      <View style={styles.starRow}>
-        <View style={styles.rating}>
-          {Array(wholeStars)
-            .fill("star")
-            .map((star, i) => (
-              <FontAwesome5
-                name={"star"}
-                style={styles.star}
-                solid={true}
-                key={i}
-              />
-            ))}
-          {halfStar ? (
-            <FontAwesome5 name={"star-half"} style={styles.star} solid={true} />
-          ) : null}
+    <View style={styles.reviewCard}>
+      <View style={styles.cardTop}>
+        <View style={styles.starRow}>
+          <View style={styles.rating}>
+            {Array(wholeStars)
+              .fill("star")
+              .map((star, i) => (
+                <Icon name={"star"} style={styles.star} solid={true} key={i} />
+              ))}
+            {halfStar ? (
+              <Icon name={"star-half"} style={styles.star} solid={true} />
+            ) : null}
+          </View>
+          <Text style={styles.date}>
+            {date.replace(/T.*/, "").split("-").reverse().join("/")}
+          </Text>
         </View>
-        <Text>{date.replace(/T.*/, "").split("-").reverse().join("/")}</Text>
+        <Text style={styles.message}>{message}</Text>
       </View>
-      <Text style={styles.message}>{message}</Text>
       <View style={styles.cardBottom}>
-        <Button title="Reply" />
+        <View style={styles.replyBtn}>
+          <Button text="Reply" onPress={onPress} />
+        </View>
         <View style={styles.thumbRow}>
-          <FontAwesome5
-            name={"thumbs-up"}
+          <Icon
+            name={vote === "up" ? "thumbs-up" : "thumbs-o-up"}
             onPress={() => handleVote("up")}
             style={styles.thumb}
-            solid={vote === "up"}
           />
-          <FontAwesome5
-            name={"thumbs-down"}
+          <Icon
+            name={vote === "down" ? "thumbs-down" : "thumbs-o-down"}
             style={styles.thumb}
             onPress={() => handleVote("down")}
-            solid={vote === "down"}
           />
         </View>
       </View>
@@ -61,17 +60,18 @@ const Review = ({ date, rating, message, id }) => {
 };
 
 const styles = StyleSheet.create({
-  review: {
+  reviewCard: {
     backgroundColor: color.white,
-    elevation: 10,
     shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
     shadowColor: color.black,
-    marginVertical: 8,
+    marginVertical: 10,
     marginHorizontal: 20,
     borderRadius: 6,
-    padding: 8,
+  },
+  cardTop: {
+    padding: 20,
   },
   rating: {
     flexDirection: "row",
@@ -79,27 +79,39 @@ const styles = StyleSheet.create({
   starRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 10,
+    marginBottom: 15,
   },
   star: {
     color: color.yellow,
     fontSize: 18,
   },
+  date: {
+    fontFamily: "InterLight",
+    fontSize: 13,
+  },
   cardBottom: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 15,
-    backgroundColor: "lightgrey",
+    backgroundColor: color.primary,
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 6,
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 6,
+    paddingHorizontal: 20,
+    paddingVertical: 5,
   },
   thumbRow: {
     flexDirection: "row",
+    alignItems: "center",
   },
   thumb: {
     fontSize: 25,
     padding: 5,
+    color: color.teal,
   },
   message: {
     fontSize: 16,
+    fontFamily: "InterLight",
   },
 });
 

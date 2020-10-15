@@ -1,8 +1,9 @@
 export default {
-  primary: "#219ebc",
-  secondary: "#f4f7f8",
+  primary: "#d9ecf2",
+  secondary: "#ff414d",
   yellow: "#ffb703",
-  orange: "fb8500",
-  black: "#023047",
+  teal: "#1aa6b7",
+  black: "#222",
   white: "#fff",
+  offWhite: "whitesmoke",
 };
