@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useFonts } from "@use-expo/font";
-import { FlatList, SafeAreaView, StyleSheet, View } from "react-native";
-import { AppLoading } from "expo";
-import Button from "./Button";
+import { FlatList, SafeAreaView, StyleSheet, View, Text } from "react-native";
+
 import Review from "./Review";
 import axios from "axios";
 import color from "../config/color";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const ReviewScreen = ({ navigation }) => {
-  const [fontsLoaded] = useFonts({
-    Inter: require("../assets/fonts/Inter-Black.otf"),
-    InterLight: require("../assets/fonts/Inter-Light.otf"),
-  });
-
   const [reviews, setReviews] = useState([]);
 
   const sortByDate = () => {
@@ -42,13 +36,19 @@ const ReviewScreen = ({ navigation }) => {
       });
   }, []);
 
-  if (!fontsLoaded) return <AppLoading />;
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.sortContainer}>
-        <Button text="Oldest First" onPress={sortByDate} />
-        <Button text="Newest First" onPress={sortByNewestDate} />
+        <TouchableOpacity onPress={sortByDate}>
+          <View style={[styles.sortBtn, styles.oldest]}>
+            <Text style={styles.sortBtnText}>Oldest First</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={sortByNewestDate}>
+          <View style={[styles.sortBtn, styles.newest]}>
+            <Text style={styles.sortBtnText}>Newest First</Text>
+          </View>
+        </TouchableOpacity>
       </View>
       <FlatList
         data={reviews}
@@ -77,6 +77,29 @@ const styles = StyleSheet.create({
   sortContainer: {
     flexDirection: "row",
     paddingVertical: 10,
+  },
+  sortBtn: {
+    borderRadius: 18,
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    backgroundColor: color.teal,
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 5,
+  },
+  sortBtnText: {
+    color: "white",
+    fontFamily: "InterLight",
+    textTransform: "uppercase",
+    fontSize: 16,
+  },
+  oldest: {
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
+  },
+  newest: {
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0,
   },
 });
 
