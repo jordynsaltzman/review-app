@@ -79,10 +79,10 @@ const ReplyScreen = ({ route }) => {
             renderItem={(prop) => {
               return (
                 <View>
-                  <Image
+                  {/* <Image
                     source={{ uri: user.photoUrl }}
                     style={{ height: 20, width: 20 }}
-                  />
+                  /> */}
                   <Text style={styles.message}>{prop.item.reply}</Text>
                 </View>
               );
